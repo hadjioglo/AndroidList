@@ -3,11 +3,8 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,16 +12,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.myapplication.singleton.Workouts;
-
-import java.util.ArrayList;
-
 public class AddNewWorkout extends AppCompatActivity {
 
     private Button saveWorkoutButton;
-    public ArrayAdapter<String> workoutsAdapter;
-    private ArrayList<String> workouts;
-    public ListView workoutsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +35,14 @@ public class AddNewWorkout extends AppCompatActivity {
                 addItem(v);
             }
         });
-
-        workouts = new ArrayList<>();
-        workoutsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workouts);
-        workoutsList.setAdapter(workoutsAdapter);
     }
 
     private void addItem(View v) {
         EditText input = findViewById(R.id.nameYourPrep);
         String workoutNameText = input.getText().toString();
 
-        if (!(workoutNameText.isEmpty())){
-            workoutsAdapter.add(workoutNameText);
-            input.setText("");
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
-        }
+        Intent intent = new Intent(AddNewWorkout.this, MainActivity.class);
+        intent.putExtra("workoutNameText", workoutNameText);
+        startActivity(intent);
     }
 }

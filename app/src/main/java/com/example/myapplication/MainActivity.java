@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,16 +17,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+
 /**
  * From Youtube
  * https://www.youtube.com/watch?v=i9mkAoZ8FNk
- *
- * **/
+ **/
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton addNewWorkoutButton;
     public ListView workoutsList;
-
+    public ArrayAdapter<String> workoutsAdapter;
+    private ArrayList<String> workouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,18 @@ public class MainActivity extends AppCompatActivity {
 //        when you create this ArrayAdapter and set it to a ListView or Spinner,
 //        it will display each item from the workouts array using the simple layout provided by android.R.layout.simple_list_item_1.
 //        Each item will be represented by a single line of text in the UI.
+        workouts = new ArrayList<>();
+        workoutsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workouts);
+        workoutsList.setAdapter(workoutsAdapter);
 
-        
+        Intent intent = getIntent();
+        String workoutNameText = String.valueOf(intent.getParcelableArrayListExtra("workoutNameText"));
+        if (!(workoutNameText.isEmpty())) {
+            workoutsAdapter.add(workoutNameText);
+        } else {
+            Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
+        }
+
 //        deleting  workouts
         setUpWorkoutsListViewListener();
     }
@@ -71,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
                 Context context = getApplicationContext();
                 Toast.makeText(context, "Workout Removed", Toast.LENGTH_LONG).show();
 
-////                removes position from the list
-//                workouts.remove(position);
-////                refreshes the Adapter because workout was removed
-//                workoutsAdapter.notifyDataSetChanged();
+//                removes position from the list
+                workouts.remove(position);
+//                refreshes the Adapter because workout was removed
+                workoutsAdapter.notifyDataSetChanged();
                 return true;
             }
         });
