@@ -2,4 +2,6 @@
     <string name="app_name">My Application</string>
     <string name="workouts">Workouts</string>
     <string name="inputWorkoutNameField">Name your Prep</string>
+    <string name="add_new_workout">Add New Workout</string>
+    <string name="addworkout">AddWorkout</string>
 </resources>

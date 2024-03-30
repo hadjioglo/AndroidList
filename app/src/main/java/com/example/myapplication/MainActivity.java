@@ -2,7 +2,10 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -20,11 +23,10 @@ import java.util.ArrayList;
 
 /**
  * From Youtube
- * https://www.youtube.com/watch?v=i9mkAoZ8FNk
+ * <a href="https://www.youtube.com/watch?v=i9mkAoZ8FNk">...</a>
  **/
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton addNewWorkoutButton;
     private ArrayList<String> workouts; //holds the list of workouts
     private ArrayAdapter<String> workoutsAdapter; //this Adapter populates the ListView workoutList
     private ListView workoutsList;  // list that will be displayed in UI
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        addNewWorkoutButton = findViewById(R.id.addWorkoutButton); //display on UI button
+        ImageButton addNewWorkoutButton = findViewById(R.id.addWorkoutButton); //display on UI button
         workoutsList = findViewById(R.id.workoutsList); //display on UI list of existing workouts
 
 //        this method executes another method displayAddedWorkout when user clicks on Add workout button
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        
+
 
 //        when you create this ArrayAdapter and set it to a ListView or Spinner,
 //        it will display each item from the workouts array using the simple layout provided by android.R.layout.simple_list_item_1.
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         workoutsList.setAdapter(workoutsAdapter);//This means that the workoutsAdapter will be responsible for providing the data from the workouts array to be displayed in the workoutsList.
 
 
+//        this method adds workout and refreshes the workout list, after hitting enter on keyboard
+        addWorkoutDisplay();
+
 //        deleting  workouts
         setUpWorkoutsListViewListener();
     }
@@ -69,13 +74,53 @@ public class MainActivity extends AppCompatActivity {
         TextView addWorkoutInput = findViewById(R.id.addNewWorkout);
         String addWorkoutText = addWorkoutInput.getText().toString();
 
-        if (!(addWorkoutText.equals(""))) {
-            workoutsAdapter.add(String.valueOf(addWorkoutText));
+        if (!(addWorkoutText.isEmpty())) {
+            workoutsAdapter.add(addWorkoutText);
             addWorkoutInput.setText("");
         } else {
             Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private void addWorkoutDisplay() {
+        TextView addWorkoutInput = findViewById(R.id.addNewWorkout);
+        String addWorkoutText = addWorkoutInput.getText().toString();
+
+        if (!(addWorkoutText.isEmpty())) {
+            workoutsAdapter.add(addWorkoutText);
+            addWorkoutInput.setText("");
+        } else {
+            Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
+        }
+
+        addWorkoutInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addWorkout();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void addWorkout() {
+        TextView addWorkoutInput = findViewById(R.id.addNewWorkout);
+        String addWorkoutText = addWorkoutInput.getText().toString();
+
+        if (!(addWorkoutText.isEmpty())) {
+            workoutsAdapter.add(addWorkoutText);
+            workoutsAdapter.notifyDataSetChanged();
+            addWorkoutInput.setText("");
+        } else {
+            Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
+        }
+
+        // Hide the keyboard after hit enter in add workout input field
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(addWorkoutInput.getWindowToken(), 0);
     }
 
     private void setUpWorkoutsListViewListener() {
