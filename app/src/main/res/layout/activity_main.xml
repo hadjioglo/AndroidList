@@ -23,6 +23,7 @@
         android:id="@+id/addWorkoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="AddWorkout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.875"
@@ -32,22 +33,36 @@
         app:srcCompat="@android:drawable/btn_plus" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="409dp"
-        android:layout_height="632dp"
+        android:layout_height="400dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/workouts">
 
         <ListView
-            android:id="@+id/wokroutsList"
+            android:id="@+id/workoutsList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="455dp" />
+
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/addNewWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="78dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Add New Workout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
