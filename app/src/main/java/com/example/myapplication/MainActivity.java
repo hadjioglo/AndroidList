@@ -1,13 +1,13 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,9 +25,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton addNewWorkoutButton;
-    public ListView workoutsList;
-    public ArrayAdapter<String> workoutsAdapter;
-    private ArrayList<String> workouts;
+    private ArrayList<String> workouts; //holds the list of workouts
+    private ArrayAdapter<String> workoutsAdapter; //this Adapter populates the ListView workoutList
+    private ListView workoutsList;  // list that will be displayed in UI
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,37 +40,42 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        addNewWorkoutButton = findViewById(R.id.addWorkoutButton);
+        addNewWorkoutButton = findViewById(R.id.addWorkoutButton); //display on UI button
+        workoutsList = findViewById(R.id.workoutsList); //display on UI list of existing workouts
 
-//        this method points to the another page when user clicks on Add workout button
+//        this method executes another method displayAddedWorkout when user clicks on Add workout button
         addNewWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddNewWorkout.class);
-                startActivity(intent);
-                finish();
+            public void onClick(View view) {
+                displayAddedWorkout(view);
             }
         });
 
-        workoutsList = findViewById(R.id.wokroutsList);
+        
 
 //        when you create this ArrayAdapter and set it to a ListView or Spinner,
 //        it will display each item from the workouts array using the simple layout provided by android.R.layout.simple_list_item_1.
 //        Each item will be represented by a single line of text in the UI.
         workouts = new ArrayList<>();
-        workoutsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workouts);
-        workoutsList.setAdapter(workoutsAdapter);
+        workoutsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workouts);//This is the array containing the data (in this case, String data) that the ArrayAdapter will adapt and display within the ListView. Each item in the array will correspond to a single item in the ListView.
+        workoutsList.setAdapter(workoutsAdapter);//This means that the workoutsAdapter will be responsible for providing the data from the workouts array to be displayed in the workoutsList.
 
-        Intent intent = getIntent();
-        String workoutNameText = String.valueOf(intent.getParcelableArrayListExtra("workoutNameText"));
-        if (!(workoutNameText.isEmpty())) {
-            workoutsAdapter.add(workoutNameText);
+
+//        deleting  workouts
+        setUpWorkoutsListViewListener();
+    }
+
+    private void displayAddedWorkout(View view) {
+        TextView addWorkoutInput = findViewById(R.id.addNewWorkout);
+        String addWorkoutText = addWorkoutInput.getText().toString();
+
+        if (!(addWorkoutText.equals(""))) {
+            workoutsAdapter.add(String.valueOf(addWorkoutText));
+            addWorkoutInput.setText("");
         } else {
             Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
         }
 
-//        deleting  workouts
-        setUpWorkoutsListViewListener();
     }
 
     private void setUpWorkoutsListViewListener() {
