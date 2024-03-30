@@ -1,6 +1,7 @@
-package com.example.myapplication;
+package com.example.myapplication.businessFlow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +21,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.R;
+import com.example.myapplication.singleton.WorkoutDataSource;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * From Youtube
@@ -42,18 +48,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        ImageButton addNewWorkoutButton = findViewById(R.id.addWorkoutButton); //display on UI button
         workoutsList = findViewById(R.id.workoutsList); //display on UI list of existing workouts
-
-//        this method executes another method displayAddedWorkout when user clicks on Add workout button
-        addNewWorkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayAddedWorkout(view);
-            }
-        });
-
-
+        ImageButton buttonAddWorkout = findViewById(R.id.addWorkoutButton);//display on UI button
 
 //        when you create this ArrayAdapter and set it to a ListView or Spinner,
 //        it will display each item from the workouts array using the simple layout provided by android.R.layout.simple_list_item_1.
@@ -62,25 +58,30 @@ public class MainActivity extends AppCompatActivity {
         workoutsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workouts);//This is the array containing the data (in this case, String data) that the ArrayAdapter will adapt and display within the ListView. Each item in the array will correspond to a single item in the ListView.
         workoutsList.setAdapter(workoutsAdapter);//This means that the workoutsAdapter will be responsible for providing the data from the workouts array to be displayed in the workoutsList.
 
-
 //        this method adds workout and refreshes the workout list, after hitting enter on keyboard
         addWorkoutDisplay();
 
+//        Set onClickListener for adding workout
+        buttonAddWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddWorkoutActivity.class);
+                startActivity(intent);
+            }
+        });
+
 //        deleting  workouts
-        setUpWorkoutsListViewListener();
+        //implement method
     }
 
-    private void displayAddedWorkout(View view) {
-        TextView addWorkoutInput = findViewById(R.id.addNewWorkout);
-        String addWorkoutText = addWorkoutInput.getText().toString();
-
-        if (!(addWorkoutText.isEmpty())) {
-            workoutsAdapter.add(addWorkoutText);
-            addWorkoutInput.setText("");
-        } else {
-            Toast.makeText(getApplicationContext(), "Add new prep, Bro", Toast.LENGTH_LONG).show();
-        }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Update list of workouts here
+        List<String> workouts = WorkoutDataSource.getInstance().getWorkouts();
+        // Update your adapter with the new list of workouts
+        workoutsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workouts);//This is the array containing the data (in this case, String data) that the ArrayAdapter will adapt and display within the ListView. Each item in the array will correspond to a single item in the ListView.
+        workoutsList.setAdapter(workoutsAdapter);//This means that the workoutsAdapter will be responsible for providing the data from the workouts array to be displayed in the workoutsList.
     }
 
     private void addWorkoutDisplay() {
@@ -123,20 +124,4 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(addWorkoutInput.getWindowToken(), 0);
     }
 
-    private void setUpWorkoutsListViewListener() {
-//        we will use long press action. when user long press the item will be deleted from the list
-        workoutsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Context context = getApplicationContext();
-                Toast.makeText(context, "Workout Removed", Toast.LENGTH_LONG).show();
-
-//                removes position from the list
-                workouts.remove(position);
-//                refreshes the Adapter because workout was removed
-                workoutsAdapter.notifyDataSetChanged();
-                return true;
-            }
-        });
-    }
 }
