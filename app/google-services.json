@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "311266575967",
+    "project_id": "myapplication-c429a",
+    "storage_bucket": "myapplication-c429a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311266575967:android:008d5b73b4ea8791a4fdea",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311266575967-244ij943t9t04qr6661lfocnsr75hdce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0UKbbnm6zE9wmNfrhKn3MOdDnUSaWkgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311266575967-244ij943t9t04qr6661lfocnsr75hdce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311266575967:android:74f36085d1c4b561a4fdea",
+        "android_client_info": {
+          "package_name": "com.gymbro.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311266575967-244ij943t9t04qr6661lfocnsr75hdce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0UKbbnm6zE9wmNfrhKn3MOdDnUSaWkgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311266575967-244ij943t9t04qr6661lfocnsr75hdce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
